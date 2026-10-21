@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+class MedianFinder {
+public:
+    int data[50000];
+    int n;
+
+    MedianFinder() {
+        n = 0;
+    }
+
+    void addNum(int num) {
+        int left = 0, right = n;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (data[mid] < num)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        for (int i = n; i > left; i--) {
+            data[i] = data[i - 1];
+        }
+        data[left] = num;
+        n++;
+    }
+
+    double findMedian() {
+        if (n % 2 == 1)
+            return data[n / 2];
+        else
+            return (data[n / 2 - 1] + data[n / 2]) / 2.0;
+    }
+};
+
+int main() {
+    MedianFinder mf;
+    mf.addNum(1);
+    mf.addNum(2);
+    cout << mf.findMedian() << endl;  
+    mf.addNum(3);
+    cout << mf.findMedian() << endl; 
+    return 0;
+}
