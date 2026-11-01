@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+class CircularQueue {
+    Node* front;
+    Node* rear;
+    int size;
+    int capacity;
+
+public:
+    CircularQueue(int cap) {
+        front = rear = nullptr;
+        size = 0;
+        capacity = cap;
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    bool isFull() {
+        return size == capacity;
+    }
+
+    void enqueue(int val) {
+        if (isFull()) {
+            cout << "Queue is full! Cannot enqueue " << val << endl;
+            return;
+        }
+
+        Node* newNode = new Node(val);
+
+        if (isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+        rear->next = front;  
+        size++;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty! Cannot dequeue" << endl;
+            return;
+        }
+
+        Node* temp = front;
+
+        if (front == rear) {
+            front = rear = nullptr;
+        } else {
+            front = front->next;
+            rear->next = front; 
+        }
+
+        delete temp;
+        size--;
+    }
+
+    void printQueue() {
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+
+        Node* curr = front;
+        do {
+            cout << curr->data;
+            curr = curr->next;
+            if (curr != front) cout << ",";
+        } while (curr != front);
+        cout << " " << endl;
+    }
+};
+
+int main() {
+    CircularQueue q(3);  
+
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.printQueue();  
+
+    q.enqueue(4);      
+
+    q.dequeue();
+    q.printQueue();   
+
+    q.enqueue(4);
+    q.printQueue();   
+    return 0;
+}
