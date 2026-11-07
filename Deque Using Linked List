@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+    
+    Node(int val) {
+        data = val;
+        prev = NULL;
+        next = NULL;
+    }
+};
+
+class DoubleQueue {
+    Node* front;
+    Node* rear;
+    
+public:
+    DoubleQueue() {
+        front = NULL;
+        rear = NULL;
+    }
+
+    bool isEmpty() {
+        return front == NULL;
+    }
+
+    void push_front(int val) {
+        Node* newNode = new Node(val);
+        if(isEmpty()) {
+            front = rear = newNode;
+        } else {
+            newNode->next = front;
+            front->prev = newNode;
+            front = newNode;
+        }
+    }
+
+    void push_rear(int val) {
+        Node* newNode = new Node(val);
+        if(isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            newNode->prev = rear;
+            rear = newNode;
+        }
+    }
+
+    void pop_front() {
+        if(isEmpty()) {
+            cout << "Queue Empty" << endl;
+            return;
+        }
+        Node* temp = front;
+        if(front == rear) { 
+            front = rear = NULL;
+        } else {
+            front = front->next;
+            front->prev = NULL;
+        }
+        delete temp;
+    }
+
+    void pop_rear() {
+        if(isEmpty()) {
+            cout << "Queue Empty" << endl;
+            return;
+        }
+        Node* temp = rear;
+        if(front == rear) { 
+            front = rear = NULL;
+        } else {
+            rear = rear->prev;
+            rear->next = NULL;
+        }
+        delete temp;
+    }
+
+    void display() {
+        if(isEmpty()) {
+            cout << "Queue Empty" << endl;
+            return;
+        }
+        Node* temp = front;
+        cout << "Queue: ";
+        while(temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoubleQueue dq;
+    
+    dq.push_rear(1);
+    dq.push_rear(2);
+    dq.push_rear(3);
+    dq.display();
+    dq.push_front(5);
+    dq.push_front(0);
+    dq.display();
+    
+    dq.pop_front(); 
+    dq.pop_rear(); 
+    dq.display(); 
+    
+    return 0;
+}
