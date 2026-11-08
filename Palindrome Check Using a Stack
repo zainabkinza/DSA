@@ -1,0 +1,55 @@
+#include<iostream>
+using namespace std;
+class Stack{
+    char arr[500];
+    int top;
+public:
+    Stack(){
+        top = -1;
+    }
+    void push(char c){
+        arr[++top] = c;
+    }
+    char pop(){
+        return arr[top--];
+    }
+    bool empty(){
+        return top == -1;
+    }
+};
+
+bool isPalindrome(char s[]){
+    char t[500];
+    int len = 0;
+    for(int i = 0; s[i] != '\0'; i++){
+        char c = s[i];
+        if(c >= 'A' && c <= 'Z'){
+            c = c + 32;
+        }
+        if((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')){
+            t[len++] = c;
+        }
+    }
+    Stack st;
+    for(int i = 0; i < len; i++){
+        st.push(t[i]);
+    }
+    for(int i = 0; i < len; i++){
+        if(st.pop() != t[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+int main(){
+    char s[500];
+    cout<<"Enter string: ";
+    cin.getline(s, 500);
+    if(isPalindrome(s)){
+        cout<<"true"<<endl;
+    }else{
+        cout<<"false"<<endl;
+    }
+    return 0;
+}
