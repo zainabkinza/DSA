@@ -1,0 +1,58 @@
+#include<iostream>
+using namespace std;
+
+int m, n;
+char board[20][20];
+bool visited[20][20];
+
+bool dfs(int r, int c, char word[], int idx){
+    if(word[idx] == '\0'){
+        return true;
+    }
+    if(r < 0 || c < 0 || r >= m || c >= n){
+        return false;
+    }
+    if(visited[r][c] || board[r][c] != word[idx]){
+        return false;
+    }
+    visited[r][c] = true;
+    bool found = dfs(r + 1, c, word, idx + 1) ||
+                 dfs(r - 1, c, word, idx + 1) ||
+                 dfs(r, c + 1, word, idx + 1) ||
+                 dfs(r, c - 1, word, idx + 1);
+    visited[r][c] = false;
+    return found;
+}
+
+bool exist(char word[]){
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            if(dfs(i, j, word, 0)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main(){
+    char word[105];
+    cout<<"Enter no. of rows: ";
+    cin>>m;
+    cout<<"Enter no. of columns: ";
+    cin>>n;
+    cout<<"Enter board characters (row by row):"<<endl;
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            cin>>board[i][j];
+            visited[i][j] = false;
+        }
+    }
+    cout<<"Enter word: ";
+    cin>>word;
+    if(exist(word)){
+        cout<<"true"<<endl;
+    }else{
+        cout<<"false"<<endl;
+    }
+    return 0;
