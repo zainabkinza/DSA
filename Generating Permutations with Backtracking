@@ -1,0 +1,54 @@
+#include<iostream>
+using namespace std;
+
+int nums[10];
+int cur[10];
+bool used[10];
+int n;
+bool firstPrinted;
+
+void printCur(){
+    if(firstPrinted){
+        cout<<",";
+    }
+    firstPrinted = true;
+    cout<<"[";
+    for(int i = 0; i < n; i++){
+        cout<<cur[i];
+        if(i + 1 < n){
+            cout<<",";
+        }
+    }
+    cout<<"]";
+}
+
+void solve(int pos){
+    if(pos == n){
+        printCur();
+        return;
+    }
+    for(int i = 0; i < n; i++){
+        if(used[i]){
+            continue;
+        }
+        used[i] = true;
+        cur[pos] = nums[i];
+        solve(pos + 1);
+        used[i] = false;
+    }
+}
+
+int main(){
+    cout<<"Enter number of elements: ";
+    cin>>n;
+    cout<<"Enter "<<n<<" distinct elements: ";
+    for(int i = 0; i < n; i++){
+        cin>>nums[i];
+        used[i] = false;
+    }
+    firstPrinted = false;
+    cout<<"Permutations: [";
+    solve(0);
+    cout<<"]"<<endl;
+    return 0;
+}
