@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+class Sorting {
+public:
+    int comp = 0; 
+    int swap = 0; 
+
+    void reset() { 
+        comp = 0;
+        swap = 0;
+    }
+
+    void bubble(int arr[], int n) {
+        reset();
+        for(int i = 0; i < n-1; i++) {
+            for(int j = 0; j < n-1-i; j++) {
+                comp++;
+                if(arr[j] > arr[j+1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                    swap++; 
+                }
+            }
+        }
+    }
+
+    void insertion(int arr[], int n) {
+        reset();
+        for(int i = 1; i < n; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while(j >= 0 && arr[j] > key) {
+                comp++;
+                arr[j+1] = arr[j];
+                swap++;
+                j--;
+            }
+            if(j >= 0) comp++; 
+            arr[j+1] = key;
+        }
+    }
+
+    void selection(int arr[], int n) {
+        reset();
+        for(int i = 0; i < n-1; i++) {
+            int minIndex = i;
+            for(int j = i+1; j < n; j++) {
+                comp++;
+                if(arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            if(minIndex!= i) {
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+                swap++;
+            }
+        }
+    }
+
+    void sortByChoice(int arr[], int n, string choice) {
+        if(choice == "bubble") bubble(arr, n);
+        else if(choice == "insertion") insertion(arr, n);
+        else if(choice == "selection") selection(arr, n);
+        else cout << "Invalid choice" << endl;
+    }
+
+    void printResult(string name) {
+        cout << name << " : Comparisons = " << comp << ", Swaps = " << swap << endl;
+    }
+};
+
+int main() {
+    int original[] = {9,7,5,3,1,8,6,4,2,0}; 
+    int n = 10;
+
+    int arr1[n], arr2[n], arr3[n], arrChoice[n];
+
+    for(int i = 0; i < n; i++) {
+        arr1[i] = arr2[i] = arr3[i] = arrChoice[i] = original[i];
+    }
+
+    Sorting s;
+    string choice;
+
+    cout << "Enter technique: bubble / insertion / selection: ";
+    cin >> choice;
+    s.sortByChoice(arrChoice, n, choice);
+    s.printResult("Your Choice");
+
+    cout << "\n--- Analysis of All 3 ---" << endl;
+    s.bubble(arr1, n);
+    int comp[3] = {s.comp};
+    int swp[3] = {s.swap};
+    s.printResult("Bubble Sort");
+
+    s.insertion(arr2, n);
+    comp[1] = s.comp; swp[1] = s.swap;
+    s.printResult("Insertion Sort");
+
+    s.selection(arr3, n);
+    comp[2] = s.comp; swp[2] = s.swap;
+    s.printResult("Selection Sort");
+
+    string names[3] = {"Bubble", "Insertion", "Selection"};
+    int best = 0, worst = 0;
+    for(int i = 1; i < 3; i++) {
+        if(comp[i] < comp[best] || (comp[i] == comp[best] && swp[i] < swp[best])) 
+            best = i;
+        if(comp[i] > comp[worst] || (comp[i] == comp[worst] && swp[i] > swp[worst])) 
+            worst = i;
+    }
+
+    cout << "\nBEST: " << names[best] << " with " << comp[best] << " comp, " << swp[best] << " swaps" << endl;
+    cout << "WORST: " << names[worst] << " with " << comp[worst] << " comp, " << swp[worst] << " swaps" << endl;
+
+    return 0;
+}
