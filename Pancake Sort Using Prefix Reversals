@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+class PancakeSort {
+public:
+    void flip(int arr[], int k) {
+        int i = 0, j = k - 1;
+        while(i < j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+    }
+
+    int findMaxIndex(int arr[], int n) {
+        int maxIdx = 0;
+        for(int i = 1; i < n; i++) {
+            if(arr[i] > arr[maxIdx]) {
+                maxIdx = i;
+            }
+        }
+        return maxIdx;
+    }
+
+    void pancakeSort(int arr[], int n) {
+        cout << "Flip sequence: ";
+        for(int currSize = n; currSize > 1; currSize--) {
+            int maxIdx = findMaxIndex(arr, currSize);
+
+            if(maxIdx == currSize - 1) 
+                continue;
+
+            if(maxIdx != 0) {
+                flip(arr, maxIdx + 1);
+                cout << maxIdx + 1 << " ";
+            }
+
+            flip(arr, currSize);
+            cout << currSize << " "; 
+        }
+        cout << endl;
+    }
+
+    void printArray(int arr[], int n) {
+        for(int i = 0; i < n; i++) cout << arr[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    PancakeSort p;
+    int arr[] = {3, 2, 4, 1};
+    int n = 4;
+
+    cout << "Original array: ";
+    p.printArray(arr, n);
+
+    p.pancakeSort(arr, n);
+
+    cout << "Sorted array: ";
+    p.printArray(arr, n);
+
+    return 0;
+}
