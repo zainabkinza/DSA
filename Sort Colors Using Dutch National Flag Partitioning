@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+class SortColors {
+public:
+    void swapVal(int &a, int &b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    void sortColors(int nums[], int n) {
+        int low = 0;     
+        int mid = 0;    
+        int high = n - 1;
+
+        while(mid <= high) {
+            if(nums[mid] == 0) {
+                swapVal(nums[low], nums[mid]);
+                low++;
+                mid++;
+            }
+            else if(nums[mid] == 1) {
+                mid++;
+            }
+            else { 
+                swapVal(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+
+    void printArray(int nums[], int n) {
+        for(int i = 0; i < n; i++) cout << nums[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    SortColors s;
+    int nums1[] = {2,0,2,1,1,0};
+    int n1 = 6;
+
+    cout << "Original: ";
+    s.printArray(nums1, n1);
+    
+    s.sortColors(nums1, n1);
+
+    cout << "Sorted:   ";
+    s.printArray(nums1, n1);
+
+    int nums2[] = {2,0,1};
+    int n2 = 3;
+    cout << "\nOriginal: ";
+    s.printArray(nums2, n2);
+    
+    s.sortColors(nums2, n2);
+
+    cout << "Sorted:   ";
+    s.printArray(nums2, n2);
+
+    return 0;
+}
